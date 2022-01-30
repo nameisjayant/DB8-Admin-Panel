@@ -20,7 +20,9 @@ import com.db8.db8admin.ui.theme.customTypo
 @Composable
 fun UserManagementScreen() {
 
-    LazyColumn {
+    LazyColumn(modifier = Modifier
+        .fillMaxSize()
+        .padding(bottom = 60.dp)) {
         item {
             CommonHeader(text = "User management")
         }

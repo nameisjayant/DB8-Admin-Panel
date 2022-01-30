@@ -7,6 +7,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.icons.Icons
@@ -21,6 +22,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.db8.db8admin.R
+import com.db8.db8admin.common.CommonButton
+import com.db8.db8admin.common.CommonEditText
 import com.db8.db8admin.common.CommonLoginButton
 import com.db8.db8admin.common.CommonTextFields2
 import com.db8.db8admin.data.home.HomeActivity
@@ -28,6 +31,7 @@ import com.db8.db8admin.ui.theme.loginColor
 
 class LoginActivity : ComponentActivity() {
 
+    @ExperimentalMaterialApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -40,6 +44,7 @@ class LoginActivity : ComponentActivity() {
     }
 }
 
+@ExperimentalMaterialApi
 @Composable
 fun LoginScreen(contex: Activity) {
 
@@ -47,7 +52,7 @@ fun LoginScreen(contex: Activity) {
     val password = remember { mutableStateOf("") }
 
     Column(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier.fillMaxSize().padding(start = 20.dp,end = 20.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
@@ -62,23 +67,20 @@ fun LoginScreen(contex: Activity) {
             )
         }
 
-        CommonTextFields2(
-            title = email,
+        CommonEditText(
             label = "Email",
-            keyboardType = KeyboardType.Email,
-            placeholder = "Enter your email",
-            leadingIcon = Icons.Default.Email
+            placeholder = "Enter Email",
+            leadingIcon = Icons.Default.Email,
+            text = email
         )
-
-        CommonTextFields2(
-            title = password,
+        CommonEditText(
             label = "Password",
-            keyboardType = KeyboardType.Password,
-            placeholder = "Enter your password",
-            leadingIcon = Icons.Default.Lock
+            placeholder = "Enter Password",
+            leadingIcon = Icons.Default.Lock,
+            text = password
         )
 
-        CommonLoginButton(title = "Login", color = loginColor) {
+        CommonButton("Login") {
             contex.startActivity(Intent(contex, HomeActivity::class.java))
         }
 
