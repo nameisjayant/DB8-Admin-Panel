@@ -55,13 +55,13 @@ fun BottomNavigationItems(navController: NavController) {
                 icon = {
                     Icon(
                         painterResource(id = item.icon),
-                        contentDescription = "", modifier = Modifier.padding(bottom = 10.dp)
+                        contentDescription = "",
                     )
                 },
                 selectedContentColor = Color.Blue,
                 selected = currentRoute.value == item.route,
                 unselectedContentColor = Color.Black,
-                label = { Text(text = item.title, fontSize = 10.sp) },
+               // label = { Text(text = item.title, fontSize = 10.sp) },
             )
         }
     }

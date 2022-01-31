@@ -1,6 +1,8 @@
 package com.db8.db8admin.common
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
@@ -111,11 +113,14 @@ fun CommonEditText(
     label: String,
     placeholder: String,
     leadingIcon: ImageVector?,
-    text: MutableState<String>
+    text: MutableState<String>,
+    border: BorderStroke = BorderStroke(0.dp, Color.Transparent)
 ) {
 
     Column(
-        modifier = Modifier.padding(top = 20.dp)
+        modifier = Modifier
+            .padding(top = 20.dp)
+            .border(border),
     ) {
         TextField(
             value = text.value,
