@@ -41,7 +41,7 @@ fun KeywordApprovalScreen() {
 @Composable
 fun KeywordEachRow(keywords: Keywords) {
     val expanded = remember { mutableStateOf(false) }
-    val approveList = remember { mutableStateOf(listOf("Block", "UnBlock")) }
+    val approveList = remember { mutableStateOf(listOf("Approve")) }
 
     Card(
         modifier = Modifier
@@ -124,7 +124,7 @@ fun KeywordEachRow(keywords: Keywords) {
 
                     Row() {
                         Text(
-                            text = keywords.postDescription,
+                            text = keywords.keyword,
                             style = customTypo.body2,
                             modifier = Modifier
                                 .align(Alignment.CenterVertically)
@@ -132,23 +132,23 @@ fun KeywordEachRow(keywords: Keywords) {
                         )
                     }
 
-                    Row() {
-                        Image(
-                            painter = painterResource(id = keywords.approveImage),
-                            contentDescription = "",
-                            modifier = Modifier
-                                .size(8.dp)
-                                .align(Alignment.CenterVertically)
-                        )
-                        Text(
-                            text = keywords.approve,
-                            style = customTypo.body1,
-                            modifier = Modifier
-                                .align(Alignment.CenterVertically)
-                                .padding(start = 5.dp),
-                            color = if (keywords.approve == "Approved") Color(0XFF00C000) else Color.Red
-                        )
-                    }
+//                    Row() {
+//                        Image(
+//                            painter = painterResource(id = keywords.approveImage),
+//                            contentDescription = "",
+//                            modifier = Modifier
+//                                .size(8.dp)
+//                                .align(Alignment.CenterVertically)
+//                        )
+//                        Text(
+//                            text = keywords.approve,
+//                            style = customTypo.body1,
+//                            modifier = Modifier
+//                                .align(Alignment.CenterVertically)
+//                                .padding(start = 5.dp),
+//                            color = if (keywords.approve == "Approved") Color(0XFF00C000) else Color.Red
+//                        )
+//                    }
                 }
             }
 

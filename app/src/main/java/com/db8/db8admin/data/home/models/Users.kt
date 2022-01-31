@@ -11,17 +11,16 @@ data class Users(
 )
 
 val usersData = listOf(
-    Users("Smita Roy", R.drawable.user_image, R.drawable.green, "Active"),
     Users("Smita Roy", R.drawable.user_image, R.drawable.red, "Inactive"),
-    Users("Smita Roy", R.drawable.user_image, R.drawable.green, "Active"),
     Users("Smita Roy", R.drawable.user_image, R.drawable.red, "Inactive"),
-    Users("Smita Roy", R.drawable.user_image, R.drawable.green, "Active"),
     Users("Smita Roy", R.drawable.user_image, R.drawable.red, "Inactive"),
-    Users("Smita Roy", R.drawable.user_image, R.drawable.green, "Active"),
     Users("Smita Roy", R.drawable.user_image, R.drawable.red, "Inactive"),
-    Users("Smita Roy", R.drawable.user_image, R.drawable.green, "Active"),
     Users("Smita Roy", R.drawable.user_image, R.drawable.red, "Inactive"),
-    Users("Smita Roy", R.drawable.user_image, R.drawable.green, "Active"),
+    Users("Smita Roy", R.drawable.user_image, R.drawable.red, "Inactive"),
+    Users("Smita Roy", R.drawable.user_image, R.drawable.red, "Inactive"),
+    Users("Smita Roy", R.drawable.user_image, R.drawable.red, "Inactive"),
+    Users("Smita Roy", R.drawable.user_image, R.drawable.red, "Inactive"),
+    Users("Smita Roy", R.drawable.user_image, R.drawable.red, "Inactive"),
+    Users("Smita Roy", R.drawable.user_image, R.drawable.red, "Inactive"),
     Users("Smita Roy", R.drawable.user_image, R.drawable.red, "Inactive")
-
 )
