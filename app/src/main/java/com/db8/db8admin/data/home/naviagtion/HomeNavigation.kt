@@ -1,5 +1,6 @@
 package com.db8.db8admin.data.home.naviagtion
 
+import android.app.Activity
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.input.key.Key
@@ -16,7 +17,7 @@ import com.db8.db8admin.utils.NavigationScreen
 
 @ExperimentalMaterialApi
 @Composable
-fun HomeNavigation(navController: NavHostController) {
+fun HomeNavigation(navController: NavHostController, context: Activity) {
 
 
     NavHost(
@@ -24,7 +25,7 @@ fun HomeNavigation(navController: NavHostController) {
         startDestination = NavigationScreen.UserManagement.route
     ) {
         composable(NavigationScreen.UserManagement.route) {
-            UserManagementScreen()
+            UserManagementScreen(context)
         }
         composable(NavigationScreen.PostApproval.route) {
             PostApprovalScreen()

@@ -1,5 +1,6 @@
 package com.db8.db8admin.data.home
 
+import android.app.Activity
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -20,7 +21,7 @@ class HomeActivity : ComponentActivity() {
         setContent {
             MaterialTheme() {
                 Surface {
-                    HomeUiScreen()
+                    HomeUiScreen(this)
                 }
             }
         }
@@ -30,12 +31,12 @@ class HomeActivity : ComponentActivity() {
 
 @ExperimentalMaterialApi
 @Composable
-fun HomeUiScreen() {
+fun HomeUiScreen(context:Activity) {
     val navHostController = rememberNavController()
     Scaffold(
         bottomBar = { BottomNavigationItems(navHostController) }
     ) {
-        HomeNavigation(navHostController)
+        HomeNavigation(navHostController,context)
     }
 
 }
