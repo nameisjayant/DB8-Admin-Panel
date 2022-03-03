@@ -36,7 +36,6 @@ import com.db8.db8admin.data.home.models.reportList
 import com.db8.db8admin.data.home.models.usersData
 import com.db8.db8admin.ui.theme.customTypo
 
-
 @ExperimentalMaterialApi
 @Composable
 fun UserManagementScreen(context: Activity) {

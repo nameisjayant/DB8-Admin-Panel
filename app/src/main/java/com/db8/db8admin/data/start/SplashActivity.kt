@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.animation.OvershootInterpolator
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
@@ -16,6 +17,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
@@ -23,19 +25,28 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.db8.db8admin.R
+import com.db8.db8admin.data.home.HomeActivity
 import com.db8.db8admin.data.login.LoginActivity
+import com.db8.db8admin.data.ui.CommonViewModel
 import com.db8.db8admin.ui.theme.DB8AdminTheme
+import com.db8.db8admin.utils.PreferenceStore
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @SuppressLint("CustomSplashScreen")
+@AndroidEntryPoint
 class SplashActivity : ComponentActivity() {
+
+    private val viewmodel: CommonViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             DB8AdminTheme {
 
                 Surface(color = MaterialTheme.colors.background) {
-                    SplashScreen(context = this)
+                    SplashScreen(context = this, viewmodel)
                 }
             }
         }
@@ -46,7 +57,9 @@ class SplashActivity : ComponentActivity() {
 @Composable
 fun SplashScreen(
     context: Activity,
+    viewModel: CommonViewModel
 ) {
+    val scope = rememberCoroutineScope()
 
     val scale = remember { androidx.compose.animation.core.Animatable(0f) }
 
@@ -59,8 +72,24 @@ fun SplashScreen(
         )
         delay(3000L)
 
-        context.startActivity(Intent(context, LoginActivity::class.java))
+        scope.launch(Dispatchers.Main) {
+            viewModel.getPref(PreferenceStore.index).collect {
+                when (it) {
+                    "1" -> {
+                        context.startActivity(Intent(context, HomeActivity::class.java))
+                        context.finish()
+                    }
+                    else -> {
+                        context.startActivity(Intent(context, LoginActivity::class.java))
+                        context.finish()
+                    }
+                }
+            }
 
+
+            context.startActivity(Intent(context, LoginActivity::class.java))
+
+        }
     }
 
     Column(
@@ -78,4 +107,5 @@ fun SplashScreen(
     }
 
 }
+
 

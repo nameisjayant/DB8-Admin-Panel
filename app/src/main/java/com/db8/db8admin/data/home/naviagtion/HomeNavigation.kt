@@ -12,12 +12,17 @@ import com.db8.db8admin.data.home.screens.KeywordApprovalScreen
 import com.db8.db8admin.data.home.screens.PostApprovalScreen
 import com.db8.db8admin.data.home.screens.ProfileScreen
 import com.db8.db8admin.data.home.screens.UserManagementScreen
+import com.db8.db8admin.data.ui.CommonViewModel
 import com.db8.db8admin.utils.NavigationScreen
 
 
 @ExperimentalMaterialApi
 @Composable
-fun HomeNavigation(navController: NavHostController, context: Activity) {
+fun HomeNavigation(
+    navController: NavHostController,
+    context: Activity,
+    viewmodel: CommonViewModel
+) {
 
 
     NavHost(
@@ -31,7 +36,7 @@ fun HomeNavigation(navController: NavHostController, context: Activity) {
             PostApprovalScreen()
         }
         composable(NavigationScreen.KeywordApproval.route) {
-            KeywordApprovalScreen()
+            KeywordApprovalScreen(viewmodel,navController)
         }
         composable(NavigationScreen.Profile.route) {
             ProfileScreen()

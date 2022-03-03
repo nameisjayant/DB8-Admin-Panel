@@ -62,3 +62,25 @@ val keywordList = listOf(
 
     )
 
+
+data class KeywordRequest(
+    val tid:String,
+    val from:String,
+    val to:String
+)
+
+data class KeywordResponse(
+    val status:String?,
+    val data : List<Data>?
+) {
+
+    data class Data(
+        val TOPICID: String?,
+        val KEYID: String?,
+        val KEYWORDS: String?,
+        val KW_IMAGE_URL: String?,
+        val CREATION_DTM: String?,
+        val USERNAME: String?,
+        val USER_TYPE: String?
+    )
+}

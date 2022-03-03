@@ -79,11 +79,10 @@ fun CommonTextFields2(
 
 
 @Composable
-fun CommonHeader(text: String) {
+fun CommonHeader(text: String,onClick: () -> Unit={}) {
 
     Card(
         modifier = Modifier.fillMaxWidth(),
-
         ) {
         Box(modifier = Modifier.background(Color.White)) {
             Row(
@@ -92,7 +91,9 @@ fun CommonHeader(text: String) {
                     .padding(10.dp),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                IconButton(onClick = {}) {
+                IconButton(onClick = {
+                    onClick()
+                }) {
                     Icon(Icons.Default.ArrowBack, contentDescription = "")
                 }
                 Text(

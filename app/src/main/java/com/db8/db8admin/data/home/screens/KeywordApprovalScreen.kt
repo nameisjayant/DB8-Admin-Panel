@@ -1,5 +1,6 @@
 package com.db8.db8admin.data.home.screens
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -11,35 +12,74 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
+import com.db8.db8admin.R
 import com.db8.db8admin.common.CommonHeader
+import com.db8.db8admin.data.home.models.KeywordRequest
+import com.db8.db8admin.data.home.models.KeywordResponse
 import com.db8.db8admin.data.home.models.Keywords
 import com.db8.db8admin.data.home.models.keywordList
+import com.db8.db8admin.data.ui.CommonViewModel
 import com.db8.db8admin.ui.theme.customTypo
+import com.db8.db8admin.utils.ApiState
 
 
 @Composable
-fun KeywordApprovalScreen() {
+fun KeywordApprovalScreen(viewmodel: CommonViewModel, navHostController: NavHostController) {
 
-    LazyColumn(modifier = Modifier.fillMaxSize().padding(bottom = 60.dp)) {
-        item {
-            CommonHeader(text = "Keyword Approval")
-        }
-        items(keywordList) { keyword ->
-            KeywordEachRow(keywords = keyword)
+    viewmodel.getAllKeyword.collectAsState(initial = ApiState.Loading).value.let {
+        when (it) {
+            is ApiState.Success -> {
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(bottom = 60.dp)
+                ) {
+                    item {
+                        CommonHeader(text = "Keyword Approval") {
+                            navHostController.navigateUp()
+                        }
+                    }
+                    items(it.data.data!!) { keyword ->
+                        KeywordEachRow(keyword)
+                    }
+                }
+            }
+            is ApiState.Failure -> {
+                Column(
+                    modifier = Modifier.fillMaxSize(),
+                    horizontalAlignment = CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    Text(text = "Something went wrong!!")
+                    Log.d("TAG", "KeywordApprovalScreen:${it.msg} ")
+                }
+            }
+            is ApiState.Loading -> {
+                Column(
+                    modifier = Modifier.fillMaxSize(),
+                    horizontalAlignment = CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    CircularProgressIndicator()
+                }
+            }
         }
     }
 
 }
 
 @Composable
-fun KeywordEachRow(keywords: Keywords) {
+fun KeywordEachRow(keywords: KeywordResponse.Data) {
     val expanded = remember { mutableStateOf(false) }
     val approveList = remember { mutableStateOf(listOf("Approve")) }
 
@@ -61,7 +101,7 @@ fun KeywordEachRow(keywords: Keywords) {
                     modifier = Modifier.align(Alignment.CenterVertically)
                 ) {
                     Image(
-                        painter = painterResource(id = keywords.postImage), contentDescription = "",
+                        painter = painterResource(id = R.drawable.post), contentDescription = "",
                         modifier = Modifier
                             .width(116.dp)
                             .height(102.dp)
@@ -80,12 +120,12 @@ fun KeywordEachRow(keywords: Keywords) {
                         Row(
                         ) {
                             Image(
-                                painter = painterResource(id = keywords.userImage),
+                                painter = painterResource(id = R.drawable.user_image),
                                 contentDescription = "",
                                 modifier = Modifier.size(40.dp)
                             )
                             Text(
-                                text = keywords.username,
+                                text = keywords.USERNAME!!,
                                 style = customTypo.body1,
                                 modifier = Modifier
                                     .align(Alignment.CenterVertically)
@@ -124,7 +164,7 @@ fun KeywordEachRow(keywords: Keywords) {
 
                     Row() {
                         Text(
-                            text = keywords.keyword,
+                            text = keywords.KEYWORDS!!,
                             style = customTypo.body2,
                             modifier = Modifier
                                 .align(Alignment.CenterVertically)
