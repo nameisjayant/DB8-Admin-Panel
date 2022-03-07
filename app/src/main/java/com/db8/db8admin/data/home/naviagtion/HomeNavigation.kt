@@ -33,7 +33,7 @@ fun HomeNavigation(
             UserManagementScreen(context)
         }
         composable(NavigationScreen.PostApproval.route) {
-            PostApprovalScreen()
+            PostApprovalScreen(viewmodel)
         }
         composable(NavigationScreen.KeywordApproval.route) {
             KeywordApprovalScreen(viewmodel,navController)

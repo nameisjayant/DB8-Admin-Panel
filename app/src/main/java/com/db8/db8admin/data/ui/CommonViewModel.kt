@@ -17,6 +17,7 @@ class CommonViewModel @Inject constructor(
 ) : ViewModel() {
 
     val getAllKeyword = repo.getAllKeywords()
+    val getBlockedPost = repo.getBlockedPosts()
 
     fun setPref(key: Preferences.Key<String>, value: String) = viewModelScope.launch {
         store.setPref(key, value)

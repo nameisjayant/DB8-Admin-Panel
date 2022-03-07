@@ -1,5 +1,6 @@
 package com.db8.db8admin.network
 
+import com.db8.db8admin.data.home.models.BlockedPost
 import com.db8.db8admin.data.home.models.KeywordRequest
 import com.db8.db8admin.data.home.models.KeywordResponse
 import retrofit2.Response
@@ -19,5 +20,13 @@ interface ApiService {
         @Header("TOKEN") token:String,
         @Body keywordRequest: KeywordRequest
     ):Response<KeywordResponse>
+
+
+    @POST("blockedPostList.php")
+    suspend fun getAllBlockedPosts(
+        @Header("X-ACCESS-KEY") accessKey:String,
+        @Header("TOKEN") token:String,
+        @Body blockedPostRequest: BlockedPost.BlockedPostRequest
+    ):Response<BlockedPost>
 
 }

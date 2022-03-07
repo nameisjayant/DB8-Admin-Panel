@@ -1,5 +1,6 @@
 package com.db8.db8admin.data.home.screens
 
+import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -14,6 +15,7 @@ import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -21,58 +23,91 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import com.db8.db8admin.R
 import com.db8.db8admin.common.CommonButton
 import com.db8.db8admin.common.CommonEditText
 import com.db8.db8admin.common.CommonHeader
+import com.db8.db8admin.data.home.models.BlockedPost
 import com.db8.db8admin.data.home.models.Keywords
 import com.db8.db8admin.data.home.models.keywordList
+import com.db8.db8admin.data.ui.CommonViewModel
 import com.db8.db8admin.ui.theme.customTypo
+import com.db8.db8admin.utils.ApiState
 
 
 @ExperimentalMaterialApi
 @Composable
-fun PostApprovalScreen() {
+fun PostApprovalScreen(viewmodel:CommonViewModel) {
     val searchPostId = remember { mutableStateOf("") }
     val searchUsername = remember { mutableStateOf("") }
 
-    LazyColumn(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(bottom = 60.dp)
-    ) {
-        item {
-            CommonHeader(text = "Post Approval")
-        }
-        item {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(start = 20.dp, end = 20.dp)
-            ) {
-                CommonEditText(
-                    label = "Post ID",
-                    placeholder = "Search Post ID",
-                    leadingIcon = Icons.Default.Search,
-                    text = searchPostId
-                )
-                CommonEditText(
-                    label = "Username",
-                    placeholder = "Search username",
-                    leadingIcon = Icons.Default.Search,
-                    text = searchUsername
-                )
+
+    viewmodel.getBlockedPost.collectAsState(initial = ApiState.Loading).value.let {
+        when (it) {
+            is ApiState.Success -> {
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(bottom = 60.dp)
+                ) {
+                    item {
+                        CommonHeader(text = "Post Approval")
+                    }
+
+                    item {
+                        Column(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(start = 20.dp, end = 20.dp)
+                        ) {
+                            CommonEditText(
+                                label = "Post ID",
+                                placeholder = "Search Post ID",
+                                leadingIcon = Icons.Default.Search,
+                                text = searchPostId
+                            )
+                            CommonEditText(
+                                label = "Username",
+                                placeholder = "Search username",
+                                leadingIcon = Icons.Default.Search,
+                                text = searchUsername
+                            )
+                        }
+                    }
+
+                    items(it.data.data) { keyword ->
+                        PostEachRow(keyword !!)
+                    }
+                }
+            }
+            is ApiState.Failure -> {
+                Column(
+                    modifier = Modifier.fillMaxSize(),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    Text(text = "Something went wrong!!")
+                    Log.d("TAG", "KeywordApprovalScreen:${it.msg} ")
+                }
+            }
+            is ApiState.Loading -> {
+                Column(
+                    modifier = Modifier.fillMaxSize(),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    CircularProgressIndicator()
+                }
             }
         }
-        items(keywordList) { keywords ->
-            PostEachRow(keywords = keywords)
-        }
     }
+
 
 }
 
 @ExperimentalMaterialApi
 @Composable
-fun PostEachRow(keywords: Keywords) {
+fun PostEachRow(blockedPost: BlockedPost.Data) {
     val expanded = remember { mutableStateOf(false) }
     val approveList = remember { mutableStateOf(listOf("Block", "UnBlock")) }
     val domain = remember { mutableStateOf("") }
@@ -96,7 +131,7 @@ fun PostEachRow(keywords: Keywords) {
                         modifier = Modifier.align(Alignment.CenterVertically)
                     ) {
                         Image(
-                            painter = painterResource(id = keywords.postImage),
+                            painter = painterResource(id = R.drawable.post),
                             contentDescription = "",
                             modifier = Modifier
                                 .width(116.dp)
@@ -116,12 +151,12 @@ fun PostEachRow(keywords: Keywords) {
                             Row(
                             ) {
                                 Image(
-                                    painter = painterResource(id = keywords.userImage),
+                                    painter = painterResource(id = R.drawable.user_image),
                                     contentDescription = "",
                                     modifier = Modifier.size(40.dp)
                                 )
                                 Text(
-                                    text = keywords.username,
+                                    text = blockedPost.USERNAME!!,
                                     style = customTypo.body1,
                                     modifier = Modifier
                                         .align(Alignment.CenterVertically)
@@ -160,7 +195,7 @@ fun PostEachRow(keywords: Keywords) {
 
                         Row() {
                             Text(
-                                text = keywords.postDescription,
+                                text = if(blockedPost.POST_CONTENT != null) "${blockedPost.POST_CONTENT}" else "",
                                 style = customTypo.body2,
                                 modifier = Modifier
                                     .align(Alignment.CenterVertically)
